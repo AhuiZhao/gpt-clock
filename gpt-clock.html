@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Calendar & Clock</title>
+  <style>
+    #calendar {
+      margin: 10px auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      font-size: 16px;
+    }
+    #calendar th {
+      background-color: #ddd;
+      font-weight: bold;
+      padding: 5px;
+    }
+    #calendar td {
+      padding: 5px;
+    }
+    #calendar .today {
+      background-color: yellow;
+    }
+    #clock {
+      margin: 10px auto;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+  <script type="text/javascript">
+    function updateClock() {
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      var timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+      document.getElementById('clock').innerHTML = timeString;
+      setTimeout(updateClock, 1000); // 每秒钟更新一次时钟
+    }
+
+    function updateCalendar() {
+      var now = new Date();
+      var year = now.getFullYear();
+      var month = now.getMonth() + 1; // 月份从0开始计数，因此需要加1
+      var date = now.getDate();
+      var daysInMonth = new Date(year, month, 0).getDate(); // 获取当月的天数
+      var firstDayOfMonth = new Date(year, month - 1, 1).getDay(); // 获取当月第一天是星期几
+
+      // 创建日历表格
+      var table = '<table id="calendar">';
+      table += '<tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr>';
+      var day = 1;
+      for (var i = 0; i < 6; i++) { // 最多6行
+        table += '<tr>';
+        for (var j = 0; j < 7; j++) { // 一行7列
+          if (i === 0 && j < firstDayOfMonth) {
+            table += '<td></td>'; // 空白格子
+          } else if (day > daysInMonth) {
+            table += '<td></td>'; // 空白格子
+          } else {
+            if (day === date) {
+              table += '<td class="today">' + day + '</td>'; // 今天的格子
+            } else {
+              table += '<td>' + day + '</td>'; // 普通的格子
+}
+day++;
+}
+}
+table += '</tr>';
+if (day > daysInMonth) {
+break; // 如果已经超过当月的天数，则退出循环
+}
+}
+table += '</table>';
+document.getElementById('calendar').innerHTML = table;
+}
+window.addEventListener('load', function() {
+  updateClock();
+  updateCalendar();
+  setInterval(function() {
+    document.getElementById('clock').style.display = 'none';
+    document.getElementById('clock').offsetHeight;
+    document.getElementById('clock').style.display = 'block';
+  }, 1000); // 每秒钟使时钟重新绘制一次，以保持屏幕常亮
+});
+  </script>
+</head>
+<body>
+  <div id="clock"></div>
+  <div id="calendar"></div>
+</body>
+</html>
+```
